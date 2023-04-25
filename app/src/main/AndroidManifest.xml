@@ -18,6 +18,11 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".MainActivity"
+            android:parentActivityName=".StartActivity"
+            android:exported="true"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".StartActivity"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
@@ -27,5 +32,7 @@
             </intent-filter>
         </activity>
     </application>
+
+<!--    android:launchMode="singleTop"-->
 
 </manifest>

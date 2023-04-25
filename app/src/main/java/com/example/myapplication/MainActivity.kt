@@ -22,6 +22,7 @@ import kotlin.math.log
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
+    val DEV_TMP_DATE = "YYYY-MM-DD"
     val recyclerview : RecyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerview) }
     val DBHandler by lazy { DBHandler(this) }
     lateinit var data : LinkedList<Crime>
@@ -30,10 +31,15 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i("CHECKED","ONCREATE_MAIN")
+//        Log.i("CHECKED","ONCREATE_MAIN")
         setContentView(R.layout.activity_main)
 
         data = DBHandler.getCrimes()
+        //TO DO
+        /* Nowy handler do bazy danych musi zwraca dla podanej daty ostatnie recordy, jezeli kilka to zwraca ten z wyzszym ID \
+        zwracane recordy sa w formie  LinkedList<Crime> gdzie Crime to dany typ cwiczenia, brak cwiczenia w bazie ma zwracac \
+        objekt Crime z nazwą cwiczenia oraz zdefiniowanymi pustymi "" brakujacymi atrybutami, mozesz pozmieniac nazwy ale zostawiam to narazie\
+        do czasu refactoru */
 
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
@@ -44,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 val intent = Intent(this@MainActivity,CrimeActivity::class.java)
 
-                intent.putExtra("UUID", DBHandler.getCrimes()[position].uuid)
+                intent.putExtra("UUID", DBHandler.getCrimes()[position].uuid) // Napisac funkcje DBhandler do wyciągania pojedynczej linijki z danym UUID(to taki powiedzmy hash)
                 startActivity(intent)
             }
         })
