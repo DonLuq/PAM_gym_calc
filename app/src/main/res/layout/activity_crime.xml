@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".CrimeActivity">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,89 +16,45 @@
         android:layout_weight="10"
         android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TITLE"
-                android:layout_marginTop="25dp"
-                android:textStyle="bold"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
 
-            <EditText
+            <!--EXERCISE NAME-->
+            <TextView
                 android:id="@+id/crime_title"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:inputType="text"
-                android:imeOptions="actionSend"
-                android:text="Enter a title for the exercise."/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DETAILS"
-                android:layout_marginTop="10dp"
+                android:text="Hello world!"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textAllCaps="true"
+                android:textSize="18dp"
                 android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/crime_details"
-                android:layout_height="wrap_content"
+            <View
                 android:layout_width="match_parent"
-                android:inputType="text"
-                android:imeOptions="actionSend"
-                android:text="Enter a details for the exercise."/>
-
+                android:layout_marginTop="10dp"
+                android:layout_height="1dp"
+                android:background="@color/black"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="10dp"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="DATE:"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="RECORD:"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/crime_date"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:inputType="date"
-                    android:onClick="changeDate"
-                    android:text="YYYY-MM-DD" />
-
-                <TextView
-                    android:id="@+id/crime_time"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:onClick="changeTime"
-                    android:inputType="date"
-                    android:text="HH:MM:SS" />
 
                 <EditText
                     android:id="@+id/record_entry_1"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="1st mass"
+                    android:textColorHint="#a0a0a0"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:text="" />
@@ -104,7 +62,10 @@
                 <EditText
                     android:id="@+id/record_entry_2"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="2nd mass"
+                    android:textColorHint="#a0a0a0"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:text="" />
@@ -112,26 +73,105 @@
                 <EditText
                     android:id="@+id/record_entry_3"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="3rd mass"
+                    android:textColorHint="#a0a0a0"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:text="" />
 
             </LinearLayout>
 
-            <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/record_rep_1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="1st repeats"
+                android:textColorHint="#a0a0a0"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/record_rep_2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="2nd repeats"
+                android:textColorHint="#a0a0a0"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/record_rep_3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="3rd repeats"
+                android:textColorHint="#a0a0a0"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/crime_date"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textSize="15dp"
+                android:inputType="date"
+                android:onClick="changeDate"
+                android:text="YYYY-MM-DD" />
+
+        </LinearLayout>
+
+        <Button
                 android:id="@+id/add_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="addRecord"
                 android:text="ADD RECORD" />
+        <!--                android:onClick="addRecord"-->
 
-            <TextView
+
+        <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RECORDS:"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="LAST RECORDS"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,136 +180,156 @@
 
                 <TextView
                     android:id="@+id/record_1_info"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:text="HERE will be your records"
+                    android:gravity="center"
+                    android:text="M1kg R1x M2kg R2x M3kg R3x"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     android:layout_width="1dp"/>
 
                 <TextView
                     android:id="@+id/record_1_date"
-                    android:layout_weight="4"
+                    android:layout_weight="2"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
-                    android:text="DATE"
+                    android:gravity="center"
+                    android:text="YYYY-MM-DD"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"
                     android:layout_width="1dp"/>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/record_2_info"
+                android:layout_weight="3"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="M1kg R1x M2kg R2x M3kg R3x"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
 
-                <TextView
-                    android:id="@+id/record_2_info"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="HERE will be your records, up to 5!"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
-
-                <TextView
-                    android:id="@+id/record_2_date"
-                    android:layout_weight="4"
-                    android:layout_height="wrap_content"
-                    android:text="DATE"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/record_2_date"
+                android:layout_weight="2"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="YYYY-MM-DD"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
 
-                <TextView
-                    android:id="@+id/record_3_info"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="HERE will be your records, up to 5!"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/record_3_date"
-                    android:layout_weight="4"
-                    android:layout_height="wrap_content"
-                    android:text="DATE"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/record_3_info"
+                android:layout_weight="3"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="M1kg R1x M2kg R2x M3kg R3x"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
 
-                <TextView
-                    android:id="@+id/record_4_info"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="HERE will be your records, up to 5!"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
-
-                <TextView
-                    android:id="@+id/record_4_date"
-                    android:layout_weight="4"
-                    android:layout_height="wrap_content"
-                    android:text="DATE"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/record_3_date"
+                android:layout_weight="2"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:text="YYYY-MM-DD"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
 
-                <TextView
-                    android:id="@+id/record_5_info"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="HERE will be your records, up to 5!"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/record_5_date"
-                    android:layout_weight="4"
-                    android:layout_height="wrap_content"
-                    android:text="DATE"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_width="1dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/record_4_info"
+                android:layout_weight="3"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="M1kg R1x M2kg R2x M3kg R3x"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
 
-<!--            <CheckBox android:id="@+id/crime_solvate"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textStyle="bold"-->
-<!--                            android:text="Is Solved?" />-->
+            <TextView
+                android:id="@+id/record_4_date"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="YYYY-MM-DD"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/record_5_info"
+                android:layout_weight="3"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="M1kg R1x M2kg R2x M3kg R3x"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
+
+            <TextView
+                android:id="@+id/record_5_date"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="YYYY-MM-DD"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:layout_width="1dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
 
             <Button
                 android:id="@+id/delete_crime_button"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
-                android:text="DELETE EXERCISE"
+                android:text="DELETE RECORD"
                 android:onClick="DeleteCrime"/>
 
             <LinearLayout

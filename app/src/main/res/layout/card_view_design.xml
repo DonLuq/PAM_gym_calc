@@ -13,84 +13,87 @@
 
         <TextView
             android:id="@+id/crimeTitle"
-            android:text="default title"
+            android:text="Hello World!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="22dp"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/crimeRecord"
+                android:layout_weight="4"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:text="DATE: "
-                android:layout_marginTop="10dp"
+                android:text="M1xR1 M2xR2 M3xR3"
                 android:textStyle="bold"
                 android:layout_width="0dp"/>
 
             <TextView
                 android:id="@+id/crimeDate"
-                android:layout_weight="4"
-                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:text="DATE"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:layout_width="0dp"/>`
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="RECORD: "
-                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="YYYY-MM-DD"
                 android:textStyle="bold"
                 android:layout_width="0dp"/>
 
-            <TextView
-                android:id="@+id/crimeRecord"
-                android:layout_weight="4"
-                android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content"
-                android:text="RECORD(15 15 15[kg])"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:layout_width="0dp"/>
-
-
         </LinearLayout>
 
-<!--        <TextView-->
-<!--            android:id="@+id/crimeDate"-->
-<!--            android:text="default data"-->
+<!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="18dp"/>-->
+<!--            android:textAlignment="center"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:text="RECORD "-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_width="0dp"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/crimeRecord"-->
+<!--                android:layout_weight="4"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="M1xR1 M2xR2 M3xR3"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_width="0dp"/>-->
+
+
+<!--        </LinearLayout>-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/black_lighter"
+            />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/crimeSolved"
-        android:layout_weight="2"
-        android:layout_width="0dp"
-        android:layout_gravity="center"
-        android:gravity="center_vertical"
-        android:text="XYZ"
-        android:layout_height="match_parent"/>
+<!--    <TextView-->
+<!--        android:id="@+id/crimeSolved"-->
+<!--        android:layout_weight="2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:text="XYZ"-->
+<!--        android:layout_height="match_parent"/>-->
 
 
 </LinearLayout>

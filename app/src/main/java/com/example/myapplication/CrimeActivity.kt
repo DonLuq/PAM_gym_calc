@@ -11,6 +11,7 @@ import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.activity_crime.*
 import java.util.*
 
 
@@ -19,12 +20,12 @@ public class CrimeActivity : AppCompatActivity() {
     val bundle : Bundle? by lazy { intent.extras }
     val title : TextView by lazy { findViewById(R.id.crime_title) }
     val date : TextView by lazy { findViewById(R.id.crime_date) }
-    val time : TextView by lazy { findViewById(R.id.crime_time) }
-    val record_1 : EditText by lazy { findViewById(R.id.record_entry_1) }
-    val record_2 : EditText by lazy { findViewById(R.id.record_entry_2) }
-    val record_3 : EditText by lazy { findViewById(R.id.record_entry_3) }
-    val details : TextView by lazy { findViewById(R.id.crime_details) }
+//    val time : TextView by lazy { findViewById(R.id.crime_time) }
+//    val record_1 : EditText by lazy { findViewById(R.id.record_entry_1) }
+//    val record_2 : EditText by lazy { findViewById(R.id.record_entry_2) }
+//    val record_3 : EditText by lazy { findViewById(R.id.record_entry_3) }
     val UUID : String by lazy {bundle!!.getString("UUID").toString()}
+
 
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
@@ -37,6 +38,7 @@ public class CrimeActivity : AppCompatActivity() {
     val viewPager : ViewPager2 by lazy {findViewById(R.id.view_pager)}
     val adapter by lazy { CrimePagerAdapter(this) }
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,6 @@ public class CrimeActivity : AppCompatActivity() {
         Log.i("CHECKED","A")
         viewPager.currentItem = DBHandler(this).getCrimePosition(UUID)
         Log.i("CHECKED","B")
-
 
     }
 
@@ -70,9 +71,9 @@ public class CrimeActivity : AppCompatActivity() {
     //TODO ZAPIS DANYCH WYLACZONY
     override fun onPause() {
         val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
-        currentHolder.title = title.text.toString()
-        currentHolder.date = date.text.toString() + " " + time.text.toString()
-        currentHolder.details = details.text.toString()
+//        currentHolder.title = title.text.toString()
+//        currentHolder.date = date.text.toString() + " " + time.text.toString()
+//        currentHolder.details = details.text.toString()
         DBHandler(this).updateCrime(currentHolder)
         super.onPause()
     }
@@ -109,31 +110,31 @@ public class CrimeActivity : AppCompatActivity() {
             dpd.show()
     }
 
-    fun changeTime(view: android.view.View) {
-        val tpt = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { view, hourOfDay : Int, minute : Int ->
-            var tempText : String = ""
-
-            if (hourOfDay < 10){
-                tempText += "0" + (hourOfDay).toString() + ":"
-            }
-            else{
-                tempText += (hourOfDay).toString() + ":"
-            }
-
-            if (minute < 10){
-                tempText += "0" + minute.toString()
-            }
-            else{
-                tempText += minute.toString()
-            }
-
-            tempText += ":00"
-            time.text = tempText
-
-        },hour,minute,true)
-
-            tpt.show()
-    }
+//    fun changeTime(view: android.view.View) {
+//        val tpt = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { view, hourOfDay : Int, minute : Int ->
+//            var tempText : String = ""
+//
+//            if (hourOfDay < 10){
+//                tempText += "0" + (hourOfDay).toString() + ":"
+//            }
+//            else{
+//                tempText += (hourOfDay).toString() + ":"
+//            }
+//
+//            if (minute < 10){
+//                tempText += "0" + minute.toString()
+//            }
+//            else{
+//                tempText += minute.toString()
+//            }
+//
+//            tempText += ":00"
+//            time.text = tempText
+//
+//        },hour,minute,true)
+//
+//            tpt.show()
+//    }
 
     fun firstCrime(view: android.view.View) {
         viewPager.setCurrentItem(0)
@@ -143,13 +144,13 @@ public class CrimeActivity : AppCompatActivity() {
         viewPager.setCurrentItem(adapter.itemCount-1)
     }
 
-    fun addRecord(view: android.view.View) {
-        val stringToSend : String = date.text.toString() + " " + time.text.toString() + " " + record_1.text.toString() + " " + record_2.text.toString() + " " + record_3.text.toString()
-        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
-        DBHandler(this).addRecord(currentHolder, stringToSend)
-        val list = DBHandler(this).getCrimes()
-        adapter.refreshList(list)
-    }
+//    fun addRecord(view: android.view.View) {
+//        val stringToSend : String = date.text.toString() + " " + time.text.toString() + " " + record_1.text.toString() + " " + record_2.text.toString() + " " + record_3.text.toString()
+//        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
+//        DBHandler(this).addRecord(currentHolder, stringToSend)
+//        val list = DBHandler(this).getCrimes()
+//        adapter.refreshList(list)
+//    }
 
 
 }

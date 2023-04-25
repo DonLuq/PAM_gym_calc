@@ -57,14 +57,14 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
 
         val currentDate = LocalDate.now()
         val crimeDate = ItemsViewModel.record_1.split(" ")[0].split("-")
-        if (currentDate.dayOfMonth == Integer.parseInt(crimeDate[2])){
-            holder.clickedView.setBackgroundColor(0x00FF00);
-            holder.clickedView.setText("TRUE")
-        }
-        else{
-            holder.clickedView.setBackgroundColor(0xFF0000);
-            holder.clickedView.setText("FALSE")
-        }
+//        if (currentDate.dayOfMonth == Integer.parseInt(crimeDate[2])){
+//            holder.clickedView.setBackgroundColor(0x00FF00);
+//            holder.clickedView.setText("TRUE")
+//        }
+//        else{
+//            holder.clickedView.setBackgroundColor(0xFF0000);
+//            holder.clickedView.setText("FALSE")
+//        }
 
         val recordText = ItemsViewModel.record_1.split(" ")
         holder.recordView.setText(recordText[2] + " " + recordText[3] + " " + recordText[4])
@@ -78,7 +78,7 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
     // Holds the views for adding it to image and text
     inner class ViewHolder(ItemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(ItemView) {
         val titleView: TextView = itemView.findViewById(R.id.crimeTitle)
-        val clickedView: TextView = itemView.findViewById(R.id.crimeSolved)
+//        val clickedView: TextView = itemView.findViewById(R.id.crimeSolved)
         val dateView: TextView = itemView.findViewById(R.id.crimeDate)
         val recordView: TextView = itemView.findViewById(R.id.crimeRecord)
 

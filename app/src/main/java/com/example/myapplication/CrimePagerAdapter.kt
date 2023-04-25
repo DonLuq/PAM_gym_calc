@@ -23,9 +23,9 @@ class CrimePagerAdapter(context: Context) :
 
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val titleView: TextView = itemView.findViewById(R.id.crime_title)
-        val detailsView: TextView = itemView.findViewById(R.id.crime_details)
+//        val detailsView: TextView = itemView.findViewById(R.id.crime_details)
         val dateView: TextView = itemView.findViewById(R.id.crime_date)
-        val timeView: TextView = itemView.findViewById(R.id.crime_time)
+//        val timeView: TextView = itemView.findViewById(R.id.crime_time)
         val recordFirstDate : TextView = itemView.findViewById(R.id.record_1_date)
         val recordFirstInfo : TextView = itemView.findViewById(R.id.record_1_info)
         val recordSecondDate : TextView = itemView.findViewById(R.id.record_2_date)
@@ -52,9 +52,9 @@ class CrimePagerAdapter(context: Context) :
         val currentCrime = crimes[position]
 
         holder.titleView.setText(currentCrime.title)
-        holder.detailsView.setText(currentCrime.details)
+//        holder.detailsView.setText(currentCrime.details)
         holder.dateView.setText(LocalDate.now().toString())
-        holder.timeView.setText(LocalDateTime.now().toLocalTime().toString().split(".")[0])
+//        holder.timeView.setText(LocalDateTime.now().toLocalTime().toString().split(".")[0])
 
         val currentCrimeSplited_1 = currentCrime.record_1.split(" ")
         holder.recordFirstInfo.setText(currentCrimeSplited_1[2] + " " + currentCrimeSplited_1[3] + " " +  currentCrimeSplited_1[4])
