@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.viewpager2.widget.ViewPager2
@@ -46,7 +47,7 @@ public class CrimeActivity : AppCompatActivity() {
 
         viewPager.adapter = adapter
         Log.i("CHECKED","A")
-        viewPager.currentItem = DBHandler(this).getCrimePosition(UUID)
+        viewPager.currentItem = DBHandler(this).getExercisePosition(UUID)
         Log.i("CHECKED","B")
 
     }
@@ -60,9 +61,9 @@ public class CrimeActivity : AppCompatActivity() {
 //TODO DELETE WYLACZANY CHWILOWO
     @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun DeleteCrime(view: android.view.View) {
-        DBHandler(this).deleteCrime( adapter.crimes[viewPager.currentItem])
-        val list = DBHandler(this).getCrimes()
+    fun DeleteCrime(view: View) {
+        DBHandler(this).deleteExercise( adapter.crimes[viewPager.currentItem])
+        val list = DBHandler(this).getExercises()
         adapter.refreshList(list)
         viewPager.adapter?.notifyDataSetChanged()
         finish()
@@ -74,7 +75,7 @@ public class CrimeActivity : AppCompatActivity() {
 //        currentHolder.title = title.text.toString()
 //        currentHolder.date = date.text.toString() + " " + time.text.toString()
 //        currentHolder.details = details.text.toString()
-        DBHandler(this).updateCrime(currentHolder)
+        DBHandler(this).updateExercise(currentHolder)
         super.onPause()
     }
 
