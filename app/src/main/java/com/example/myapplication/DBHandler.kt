@@ -9,15 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.util.*
-
-data class Exercise(
-    val id: Int,
-    val uuid: UUID,
-    val exercise: String,
-    val date: String,
-    val weight: String,
-    val repetitions: String
-)
+import com.example.myapplication.Exercise
 
 class DBHandler(context: Context) : SQLiteOpenHelper(
     context, DATABASE_NAME, null, DATABASE_VERSION
@@ -26,6 +18,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "exerciseDB.db"
+
         private const val TABLE_EXERCISE = "ExerciseTable"
         private const val COLUMN_ID = "ID"
         private const val COLUMN_UUID = "_UUID"
@@ -71,7 +64,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
         var id: Int
-        var uuid: UUID
+        var uuid: String
         var exercise: String
         var date: String
         var weight: String
@@ -80,7 +73,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
-                uuid = UUID.fromString(cursor.getString(cursor.getColumnIndex(COLUMN_UUID)))
+                uuid = cursor.getString(cursor.getColumnIndex(COLUMN_UUID))
                 exercise = cursor.getString(cursor.getColumnIndex(COLUMN_EXERCISE))
                 date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
                 weight = cursor.getString(cursor.getColumnIndex(COLUMN_WEIGHT))
@@ -178,7 +171,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
         var id: Int
-        var uuid: UUID
+        var uuid: String
         var exercise: String
         var date: String
         var weight: String
@@ -187,7 +180,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
-                uuid = UUID.fromString(cursor.getString(cursor.getColumnIndex(COLUMN_ID)))
+                uuid = cursor.getString(cursor.getColumnIndex(COLUMN_ID))
                 exercise = cursor.getString(cursor.getColumnIndex(COLUMN_EXERCISE))
                 date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
                 weight = cursor.getString(cursor.getColumnIndex(COLUMN_WEIGHT))
@@ -207,7 +200,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     //Tutaj jest metoda getColumnIndexOrThrow zamiast GetColumnIndex poniewaz
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
     //to rozwiazac
-    fun getListOfElementsByDate(): List<Exercise> {
+    fun getListOfElementsByDate(string: String): List<Exercise> {
         val exercisesByDate: MutableMap<String, Exercise> = mutableMapOf()
 
         val selectQuery = "SELECT * FROM $TABLE_EXERCISE ORDER BY $COLUMN_DATE DESC"
@@ -216,7 +209,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
         var id: Int
-        var uuid: UUID
+        var uuid: String
         var exercise: String
         var date: String
         var weight: String
@@ -225,7 +218,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         if (cursor.moveToFirst()) {
             do {
                 id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
-                uuid = UUID.fromString(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)))
+                uuid = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))
                 exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE))
                 date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
                 weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT))
@@ -253,14 +246,16 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val db = this.readableDatabase
         val cursor: Cursor = db.rawQuery(selectQuery, null)
 
-        var uuid: UUID? = null
+        var id: Int? = null
+        var uuid: String? = null
         var exercise: String? = null
         var date: String? = null
         var weight: String? = null
         var repetitions: String? = null
 
         if (cursor.moveToFirst()) {
-            uuid = UUID.fromString(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)))
+            uuid = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))
+            id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE))
             date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
             weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT))
@@ -270,8 +265,8 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         db.close()
         cursor.close()
 
-        return if (uuid != null && exercise != null && date != null && weight != null && repetitions != null) {
-            Exercise(id, uuid, exercise, date, weight, repetitions)
+        return if (id != null && exercise != null && date != null && weight != null && repetitions != null) {
+            Exercise(id, exercise, date, weight, repetitions)
         } else {
             null
         }
@@ -281,7 +276,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
     //to rozwiazac
     fun getRowByUUID(uuid: UUID): Map<String, String>? {
-        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_ID = ?"
+        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_UUID = ?"
         val args = arrayOf(uuid.toString())
 
         val db = this.readableDatabase
@@ -291,7 +286,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
 
         if (cursor.moveToFirst()) {
             row = mapOf(
-                COLUMN_ID to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                COLUMN_UUID to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)),
                 COLUMN_EXERCISE to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE)),
                 COLUMN_DATE to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
                 COLUMN_WEIGHT to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),

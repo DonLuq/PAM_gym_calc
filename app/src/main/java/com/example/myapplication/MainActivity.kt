@@ -6,13 +6,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.SearchEvent
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDateTime
@@ -34,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 //        Log.i("CHECKED","ONCREATE_MAIN")
         setContentView(R.layout.activity_main)
 
-        data = DBHandler.getCrimes()
+        data = DBHandler.getExercises()
         //TO DO
         /* Nowy handler do bazy danych musi zwraca dla podanej daty ostatnie recordy, jezeli kilka to zwraca ten z wyzszym ID \
         zwracane recordy sa w formie  LinkedList<Crime> gdzie Crime to dany typ cwiczenia, brak cwiczenia w bazie ma zwracac \
@@ -50,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 val intent = Intent(this@MainActivity,CrimeActivity::class.java)
 
-                intent.putExtra("UUID", DBHandler.getCrimes()[position].uuid) // Napisac funkcje DBhandler do wyciągania pojedynczej linijki z danym UUID(to taki powiedzmy hash)
+                intent.putExtra("UUID", DBHandler.getExercises()[position].uuid) // Napisac funkcje DBhandler do wyciągania pojedynczej linijki z danym UUID(to taki powiedzmy hash)
                 startActivity(intent)
             }
         })
@@ -77,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         Log.i("CHECKED","ONRESUME_MAIN")
         super.onResume()
-        val list = DBHandler.getCrimes()
+        val list = DBHandler.getExercises()
         adapter.refreshList(list)
         recyclerview.adapter?.notifyDataSetChanged()
     }
@@ -85,20 +80,19 @@ class MainActivity : AppCompatActivity() {
      @SuppressLint("NotifyDataSetChanged")
      @RequiresApi(Build.VERSION_CODES.O)
      fun CreateCrime(view: android.view.View) {
-        val newCrime = Crime()
+        val newExercise = Exercise()
 
-        DBHandler.addCrime(newCrime)
-        val list = DBHandler.getCrimes()
+         newExercise        val list = DBHandler.getExercises()
         adapter.refreshList(list)
         recyclerview.adapter?.notifyDataSetChanged()
 
         val intent = Intent(this, CrimeActivity::class.java)
-        intent.putExtra("UUID", newCrime.uuid) //TODO TUTAJ JEST PROBLEM Z NIEISTNIEJACYM ID -> SOLVED: przekazywanie uuid z ktorego w kolejnej aktywnosci odczytywane jest ID
+        intent.putExtra("UUID", newExercise.uuid) //TODO TUTAJ JEST PROBLEM Z NIEISTNIEJACYM ID -> SOLVED: przekazywanie uuid z ktorego w kolejnej aktywnosci odczytywane jest ID
         startActivity(intent)
     }
 
     fun searchBase(newText : String) {
-        val list = DBHandler.searchName(newText)
+        val list = DBHandler.searchExercise(newText)
         adapter.refreshList(list)
         recyclerview.adapter?.notifyDataSetChanged()
     }
