@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDate
 import java.util.*
 
-class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     private lateinit var mListener : onItemClickListener
 
     interface onItemClickListener{
@@ -29,7 +29,7 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
 
     }
 
-    fun refreshList (list: LinkedList<Crime>){
+    fun refreshList (list: List<Exercise>){
         mList = list
         notifyDataSetChanged()
     }
@@ -48,15 +48,15 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val ItemsViewModel = mList[position]
+        val ExerciseItem = mList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.titleView.setText(ItemsViewModel.title)
+        holder.titleView.setText(ExerciseItem.getExercise()) //TODO please change this function name to sthing like getName
+        holder.dateView.setText(ExerciseItem.getDate())
+        holder.recordView.setText(ExerciseItem.getWeight()) //TODO Add parser for display proper data
 
-        holder.dateView.setText(ItemsViewModel.record_1.split(" ")[0] +" " + ItemsViewModel.record_1.split(" ")[1])
-
-        val currentDate = LocalDate.now()
-        val crimeDate = ItemsViewModel.record_1.split(" ")[0].split("-")
+//        val currentDate = LocalDate.now()
+//        val crimeDate = ItemsViewModel.record_1.split(" ")[0].split("-")
 //        if (currentDate.dayOfMonth == Integer.parseInt(crimeDate[2])){
 //            holder.clickedView.setBackgroundColor(0x00FF00);
 //            holder.clickedView.setText("TRUE")
@@ -66,8 +66,8 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
 //            holder.clickedView.setText("FALSE")
 //        }
 
-        val recordText = ItemsViewModel.record_1.split(" ")
-        holder.recordView.setText(recordText[2] + " " + recordText[3] + " " + recordText[4])
+//        val recordText = ItemsViewModel.record_1.split(" ") // TODO Set records here after class delivery
+//        holder.recordView.setText(recordText[2] + " " + recordText[3] + " " + recordText[4])
     }
 
     // return the number of the items in the list
@@ -78,7 +78,6 @@ class CustomAdapter(private var mList: List<Crime>) : RecyclerView.Adapter<Custo
     // Holds the views for adding it to image and text
     inner class ViewHolder(ItemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(ItemView) {
         val titleView: TextView = itemView.findViewById(R.id.crimeTitle)
-//        val clickedView: TextView = itemView.findViewById(R.id.crimeSolved)
         val dateView: TextView = itemView.findViewById(R.id.crimeDate)
         val recordView: TextView = itemView.findViewById(R.id.crimeRecord)
 
