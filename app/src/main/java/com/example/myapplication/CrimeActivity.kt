@@ -33,8 +33,10 @@ public class CrimeActivity : AppCompatActivity() {
     val month = c.get(Calendar.MONTH)
     val day = c.get(Calendar.DAY_OF_MONTH)
 
+    //Add to date to support comparison of results
     val hour = c.get(Calendar.HOUR)
     val minute = c.get(Calendar.MINUTE)
+    val second = c.get(Calendar.SECOND)
 
     val viewPager : ViewPager2 by lazy {findViewById(R.id.view_pager)}
     val adapter by lazy { CrimePagerAdapter(this) }
@@ -58,7 +60,6 @@ public class CrimeActivity : AppCompatActivity() {
     }
 
 
-//TODO DELETE WYLACZANY CHWILOWO
     @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
     fun DeleteCrime(view: View) {
@@ -69,7 +70,6 @@ public class CrimeActivity : AppCompatActivity() {
         finish()
     }
 
-    //TODO ZAPIS DANYCH WYLACZONY
     override fun onPause() {
         val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
 //        currentHolder.title = title.text.toString()
@@ -111,6 +111,7 @@ public class CrimeActivity : AppCompatActivity() {
             dpd.show()
     }
 
+    //TO DO: Add block with time change
 //    fun changeTime(view: android.view.View) {
 //        val tpt = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { view, hourOfDay : Int, minute : Int ->
 //            var tempText : String = ""

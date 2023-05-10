@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.UUID;
 
 data class Exercise(
-    private var id: Int,
-    private var uuid: String = UUID.randomUUID().toString(),
-    private var exercise: String,
-    private var date: String = "2000-12-12 13:20:00",
-    private var weight: String = "10 10 10",
-    private var repetitions: String = "15 15 15",
+    var id: Int,
+    var uuid: String = UUID.randomUUID().toString(),
+    var exercise: String,
+    var date: String = "2000-12-12 13:20:00",
+    var weight: String = "10 10 10",
+    var repetitions: String = "15 15 15",
 
 ) {
     constructor(exercise: Exercise) : this(

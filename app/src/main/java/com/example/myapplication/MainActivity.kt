@@ -10,31 +10,25 @@ import android.widget.SearchView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.log
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
-    val DEV_TMP_DATE = "YYYY-MM-DD"
+    val startActivitySources : Bundle? by lazy { intent.extras }
+    val DEV_TMP_DATE : String by lazy {startActivitySources!!.getString("DATE_FROM_PICK").toString()}
+//    val DEV_TMP_DATE = "YYYY-MM-DD"
     val recyclerview : RecyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerview) }
     val DBHandler by lazy { DBHandler(this) }
-    lateinit var data : LinkedList<Crime>
+    lateinit var data : List<Exercise>
     val adapter by lazy { CustomAdapter(data) }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        Log.i("CHECKED","ONCREATE_MAIN")
         setContentView(R.layout.activity_main)
 
-        data = DBHandler.getExercises()
-        //TO DO
-        /* Nowy handler do bazy danych musi zwraca dla podanej daty ostatnie recordy, jezeli kilka to zwraca ten z wyzszym ID \
-        zwracane recordy sa w formie  LinkedList<Crime> gdzie Crime to dany typ cwiczenia, brak cwiczenia w bazie ma zwracac \
-        objekt Crime z nazwą cwiczenia oraz zdefiniowanymi pustymi "" brakujacymi atrybutami, mozesz pozmieniac nazwy ale zostawiam to narazie\
-        do czasu refactoru */
+        // data -> list<Exercise> with same date property
+        data = DBHandler.getListOfElementsByDate(DEV_TMP_DATE)
 
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
@@ -45,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 val intent = Intent(this@MainActivity,CrimeActivity::class.java)
 
-                intent.putExtra("UUID", DBHandler.getExercises()[position].uuid) // Napisac funkcje DBhandler do wyciągania pojedynczej linijki z danym UUID(to taki powiedzmy hash)
+                intent.putExtra("UUID", data[position].getUUID())
                 startActivity(intent)
             }
         })
@@ -53,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         val searchView : SearchView = findViewById(R.id.search_bar)
         searchView.onActionViewExpanded()
 
+        //TODO Check if correct db handler is in use.
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -72,24 +67,25 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         Log.i("CHECKED","ONRESUME_MAIN")
         super.onResume()
-        val list = DBHandler.getExercises()
+        val list = DBHandler.getListOfElementsByDate(DEV_TMP_DATE)
         adapter.refreshList(list)
         recyclerview.adapter?.notifyDataSetChanged()
     }
 
-     @SuppressLint("NotifyDataSetChanged")
-     @RequiresApi(Build.VERSION_CODES.O)
-     fun CreateCrime(view: android.view.View) {
-        val newExercise = Exercise()
-
-         newExercise        val list = DBHandler.getExercises()
-        adapter.refreshList(list)
-        recyclerview.adapter?.notifyDataSetChanged()
-
-        val intent = Intent(this, CrimeActivity::class.java)
-        intent.putExtra("UUID", newExercise.uuid) //TODO TUTAJ JEST PROBLEM Z NIEISTNIEJACYM ID -> SOLVED: przekazywanie uuid z ktorego w kolejnej aktywnosci odczytywane jest ID
-        startActivity(intent)
-    }
+//     @SuppressLint("NotifyDataSetChanged")
+//     @RequiresApi(Build.VERSION_CODES.O)
+//     fun CreateCrime(view: android.view.View) {
+//        val newCrime = Crime()
+//
+//        DBHandler.addCrime(newCrime)
+//        val list = DBHandler.getCrimes()
+//        adapter.refreshList(list)
+//        recyclerview.adapter?.notifyDataSetChanged()
+//
+//        val intent = Intent(this, CrimeActivity::class.java)
+//        intent.putExtra("UUID", newCrime.uuid) //TODO TUTAJ JEST PROBLEM Z NIEISTNIEJACYM ID -> SOLVED: przekazywanie uuid z ktorego w kolejnej aktywnosci odczytywane jest ID
+//        startActivity(intent)
+//    }
 
     fun searchBase(newText : String) {
         val list = DBHandler.searchExercise(newText)
