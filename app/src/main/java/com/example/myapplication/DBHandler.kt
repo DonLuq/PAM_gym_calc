@@ -38,7 +38,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(db: SQLiteDatabase?) {
         val CREATE_EXERCISE_TABLE =
-            "CREATE TABLE $TABLE_EXERCISE($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_EXERCISE TEXT, $COLUMN_DATE TEXT, $COLUMN_WEIGHT TEXT, $COLUMN_REPETITIONS TEXT)"
+            "CREATE TABLE $TABLE_EXERCISE($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_UUID TEXT, $COLUMN_EXERCISE TEXT, $COLUMN_DATE TEXT, $COLUMN_WEIGHT TEXT, $COLUMN_REPETITIONS TEXT)"
 
         db?.execSQL(CREATE_EXERCISE_TABLE)
     }
@@ -114,9 +114,20 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     @RequiresApi(Build.VERSION_CODES.O)
     fun deleteExercise(exerciseRecord: Exercise) {
         val db = this.writableDatabase
-        db.delete(TABLE_EXERCISE, "$COLUMN_ID=?", arrayOf(exerciseRecord.id.toString()))
+        val selection = if (exerciseRecord.id != null) {
+            "$COLUMN_ID=?"
+        } else {
+            "$COLUMN_UUID=?"
+        }
+        val selectionArgs = if (exerciseRecord.id != null) {
+            arrayOf(exerciseRecord.id.toString())
+        } else {
+            arrayOf(exerciseRecord.uuid.toString())
+        }
+        db.delete(TABLE_EXERCISE, selection, selectionArgs)
         db.close()
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateExercise(exerciseRecord: Exercise) {
