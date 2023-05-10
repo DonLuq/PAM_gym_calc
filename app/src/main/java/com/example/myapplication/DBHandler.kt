@@ -301,7 +301,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
      * and returns only the latest exercise for each unique date.
      * If there are no exercises for a particular date, a default exercise with empty properties is added to the list.
      */
-    fun getListOfElementsByDate(): List<Exercise> {
+    fun getListOfElementsByDate(date: String): List<Exercise> {
 
         // Create a map to store the exercises sorted by date
         val exercisesByDate: MutableMap<String, Exercise> = mutableMapOf()
