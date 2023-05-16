@@ -26,6 +26,29 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         private const val COLUMN_DATE = "Date"
         private const val COLUMN_WEIGHT = "Weight"
         private const val COLUMN_REPETITIONS = "Repetitions"
+        private const val POSSIBLE_EXERCISES = listOf(
+                                            "Squats",
+                                            "Deadlifts",
+                                            "Bench Press",
+                                            "Overhead Press",
+                                            "Rows",
+                                            "Lunges",
+                                            "Push-ups",
+                                            "Pull-ups",
+                                            "Dips",
+                                            "Chin-ups",
+                                            "Calf Raises",
+                                            "Planks",
+                                            "Sit-ups",
+                                            "Crunches",
+                                            "Leg Press",
+                                            "Leg Curls",
+                                            "Leg Extensions",
+                                            "Bicep Curls",
+                                            "Tricep Extensions",
+                                            "Lateral Raises"
+                                            )
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -407,9 +430,9 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         //Tutaj jest metoda getColumnIndexOrThrow zamiast GetColumnIndex poniewaz
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
     //to rozwiazac
-    fun getRowByUUID(uuid: UUID): Map<String, String>? {
+    fun getRowByUUID(uuid: UUID): Exercise {
 
-        // Define the SELECT query with placeholders for arguments
+         // Define the SELECT query with placeholders for arguments
         val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_UUID = ?"
 
         // Define the argument(s) for the query as an array
@@ -421,28 +444,35 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         // Execute the query and get a cursor that points to the result set
         val cursor = db.rawQuery(selectQuery, args)
 
-        // Declare a variable to hold the row data as a Map<String, String> object
-        var row: Map<String, String>? = null
+        // Declare a variable to hold the row data as an Exercise object
+        var row: Exercise? = null
 
         // Check if the cursor has any data
         if (cursor.moveToFirst()) {
-            // If the cursor points to the first row of data, map the values to a new Map object
-            row = mapOf(
-                COLUMN_UUID to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)),
-                COLUMN_EXERCISE to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE)),
-                COLUMN_DATE to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
-                COLUMN_WEIGHT to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),
-                COLUMN_REPETITIONS to cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
-            )
+        // If the cursor points to the first row of data, create a new Exercise object with the values from the cursor
+        row = Exercise(
+        uuid  = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)),
+        exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE)),
+        date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
+        weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),
+        repetitions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
+        )
+        }
+
+        // Check if row is still null (i.e. no row was found with the given UUID)
+        if (row == null) {
+        // Throw an exception indicating that no row was found with the given UUID
+        throw Exception("No row found with UUID $uuid")
         }
 
         // Close the database and cursor resources
         db.close()
         cursor.close()
 
-        // Return the row data as a Map<String, String> object
+        // Return the row data as an Exercise object
         return row
     }
+
 
     /**
      * Retrieves an Exercise object from the database with the specified name and date
@@ -485,6 +515,50 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         // Return the Exercise object, or null if not found
         return exercise
     }
+
+    fun updateRow(exercise: Exercise) {
+        // Get a writable database reference
+        val db = this.writableDatabase
+
+        // Define the values to update as a ContentValues object
+        val values = ContentValues().apply {
+        put(COLUMN_EXERCISE, exercise.exercise)
+        put(COLUMN_DATE, exercise.date)
+        put(COLUMN_WEIGHT, exercise.weight)
+        put(COLUMN_REPETITIONS, exercise.repetitions)
+        }
+
+        // Define the WHERE clause and arguments for the UPDATE query
+        val whereClause = "$COLUMN_UUID = ?"
+        val whereArgs = arrayOf(exercise.uuid)
+
+        // Execute the UPDATE query
+        db.update(TABLE_EXERCISE, values, whereClause, whereArgs)
+
+        // Close the database resource
+        db.close()
+    }
+
+    fun updateColumn(uuid: UUID, columnName: String, newValue: String) {
+        // Get a writable database reference
+        val db = this.writableDatabase
+
+        // Define the values to update as a ContentValues object
+        val values = ContentValues().apply {
+        put(columnName, newValue)
+        }
+
+        // Define the WHERE clause and arguments for the UPDATE query
+        val whereClause = "$COLUMN_UUID = ?"
+        val whereArgs = arrayOf(uuid.toString())
+
+        // Execute the UPDATE query
+        db.update(TABLE_EXERCISE, values, whereClause, whereArgs)
+
+        // Close the database resource
+        db.close()
+    }
+
 
 
 
