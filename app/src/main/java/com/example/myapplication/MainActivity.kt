@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         // data -> list<Exercise> with same date property
         data = DBHandler.getListOfElementsByDate(DEV_TMP_DATE)
-
+        Log.d("xdd",data[0].weight)
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 val intent = Intent(this@MainActivity,CrimeActivity::class.java)
 
-                intent.putExtra("UUID", data[position].getUUID())
+                intent.putExtra("UUID", data[position].uuid)
                 startActivity(intent)
             }
         })
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    searchBase(newText)
+//                    searchBase(newText)
                 }
                 return false
             }
@@ -87,11 +87,11 @@ class MainActivity : AppCompatActivity() {
 //        startActivity(intent)
 //    }
 
-    fun searchBase(newText : String) {
-        val list = DBHandler.searchExercise(newText)
-        adapter.refreshList(list)
-        recyclerview.adapter?.notifyDataSetChanged()
-    }
+//    fun searchBase(newText : String) {
+//        val list = DBHandler.searchExercise(newText)
+//        adapter.refreshList(list)
+//        recyclerview.adapter?.notifyDataSetChanged()
+//    }
 
 
 }

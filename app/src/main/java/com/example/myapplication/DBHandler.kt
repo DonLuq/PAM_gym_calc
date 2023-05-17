@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import com.example.myapplication.Exercise
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
@@ -7,9 +8,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import java.util.*
-import com.example.myapplication.Exercise
 
 class DBHandler(context: Context) : SQLiteOpenHelper(
     context, DATABASE_NAME, null, DATABASE_VERSION
@@ -26,7 +27,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         private const val COLUMN_DATE = "Date"
         private const val COLUMN_WEIGHT = "Weight"
         private const val COLUMN_REPETITIONS = "Repetitions"
-        private const val POSSIBLE_EXERCISES = listOf(
+        val POSSIBLE_EXERCISES = listOf(
                                             "Squats",
                                             "Deadlifts",
                                             "Bench Press",
@@ -270,51 +271,51 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
              * @param query the query string to search for
              * @return a linked list of exercises whose names start with the query string
              */
-    fun searchExercise(query: String): LinkedList<Exercise> {
-        // Initialize a linked list to store the search results.
-        val exercises: LinkedList<Exercise> = LinkedList()
-
-        // Construct the SQL select query to retrieve the rows whose exercise name starts with the query string.
-        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_EXERCISE LIKE \"$query%\""
-
-        // Open a readable database connection.
-        val db = this.readableDatabase
-
-        // Execute the select query.
-        val cursor: Cursor = db.rawQuery(selectQuery, null)
-
-        // Initialize variables to store the column values of the retrieved rows.
-        var id: Int
-        var uuid: String
-        var exercise: String
-        var date: String
-        var weight: String
-        var repetitions: String
-
-        // Iterate through the rows returned by the query and extract their column values.
-        if (cursor.moveToFirst()) {
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
-                uuid = cursor.getString(cursor.getColumnIndex(COLUMN_UUID))
-                exercise = cursor.getString(cursor.getColumnIndex(COLUMN_EXERCISE))
-                date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
-                weight = cursor.getString(cursor.getColumnIndex(COLUMN_WEIGHT))
-                repetitions = cursor.getString(cursor.getColumnIndex(COLUMN_REPETITIONS))
-
-                // Create a new Exercise object with the extracted column values and add it to the results list.
-                val exerciseRecord = Exercise(id, uuid, exercise, date, weight, repetitions)
-                exercises.add(exerciseRecord)
-
-            } while (cursor.moveToNext())
-        }
-
-        // Close the database connection and the cursor.
-        db.close()
-        cursor.close()
-
-        // Return the list of search results.
-        return exercises
-    }
+//    fun searchExercise(query: String): LinkedList<Exercise> {
+//        // Initialize a linked list to store the search results.
+//        val exercises: LinkedList<Exercise> = LinkedList()
+//
+//        // Construct the SQL select query to retrieve the rows whose exercise name starts with the query string.
+//        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_EXERCISE LIKE \"$query%\""
+//
+//        // Open a readable database connection.
+//        val db = this.readableDatabase
+//
+//        // Execute the select query.
+//        val cursor: Cursor = db.rawQuery(selectQuery, null)
+//
+//        // Initialize variables to store the column values of the retrieved rows.
+//        var id: Int
+//        var uuid: String
+//        var exercise: String
+//        var date: String
+//        var weight: String
+//        var repetitions: String
+//
+//        // Iterate through the rows returned by the query and extract their column values.
+//        if (cursor.moveToFirst()) {
+//            do {
+//                id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
+//                uuid = cursor.getString(cursor.getColumnIndex(COLUMN_UUID))
+//                exercise = cursor.getString(cursor.getColumnIndex(COLUMN_EXERCISE))
+//                date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE))
+//                weight = cursor.getString(cursor.getColumnIndex(COLUMN_WEIGHT))
+//                repetitions = cursor.getString(cursor.getColumnIndex(COLUMN_REPETITIONS))
+//
+//                // Create a new Exercise object with the extracted column values and add it to the results list.
+//                val exerciseRecord = Exercise(id, uuid, exercise, date, weight, repetitions)
+//                exercises.add(exerciseRecord)
+//
+//            } while (cursor.moveToNext())
+//        }
+//
+//        // Close the database connection and the cursor.
+//        db.close()
+//        cursor.close()
+//
+//        // Return the list of search results.
+//        return exercises
+//    }
 
     //Tutaj jest metoda getColumnIndexOrThrow zamiast GetColumnIndex poniewaz
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
@@ -325,7 +326,6 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
      * If there are no exercises for a particular date, a default exercise with empty properties is added to the list.
      */
     fun getListOfElementsByDate(date: String): List<Exercise> {
-
         // Create a map to store the exercises sorted by date
         val exercisesByDate: MutableMap<String, Exercise> = mutableMapOf()
 
@@ -338,7 +338,6 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
 
         // Loop through each row returned by the query
         while (cursor.moveToNext()) {
-
             // Extract the values of each column for the current row
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val uuid = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID))
@@ -360,29 +359,50 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
             }
         }
 
-        // Close the database connection and the cursor
-        db.close()
-        cursor.close()
-
         // Filter out duplicate exercise names, keeping the latest one
         val latestExercises = exercisesByDate.values.groupBy { it.exercise }
             .mapValues { (_, v) -> v.maxByOrNull { it.date }!! }
 
-        // Create an empty list to store the latest exercises
-        val result = mutableListOf<Exercise>()
+        val randomNumber = (0..10).random()
 
         // Create a default exercise with empty properties
-        val defaultExercise = Exercise(-1, "", "", "", "", "")
+        val defaultExercise = Exercise(randomNumber, "", "", "", "", "")
+
+        // Create a new list to store the latest exercises
+        val result = mutableListOf<Exercise>()
+
 
         // Add the latest exercise for each unique date to the list
-        for (date in latestExercises.values.map { it.date }.distinct()) {
-            val exercise = latestExercises.values.find { it.date == date } ?: defaultExercise
+        for (exerciseName in POSSIBLE_EXERCISES) {
+            val selectQuery2 = "SELECT * FROM $TABLE_EXERCISE " +
+                    "WHERE $COLUMN_EXERCISE = '$exerciseName' AND $COLUMN_DATE = '$date' " +
+                    "ORDER BY $COLUMN_DATE DESC"
+            val cursor2: Cursor = db.rawQuery(selectQuery2, null)
+            val exercise = if (cursor2.moveToFirst()) {
+                val id = cursor2.getInt(cursor2.getColumnIndexOrThrow(COLUMN_ID))
+                val uuid = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_UUID))
+                val exerciseName = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_EXERCISE))
+                val date = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_DATE))
+                val weight = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_WEIGHT))
+                val repetitions = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_REPETITIONS))
+                Exercise(id, uuid, exerciseName, date, weight, repetitions)
+            } else {
+                defaultExercise.copy(exercise = exerciseName)
+            }
             result.add(exercise)
+            cursor2.close()
         }
+
+        // Close the database connection and the cursor
+        cursor.close()
+        db.close()
 
         // Return the list of latest exercises
         return result
     }
+
+
+
 
     //Tutaj jest metoda getColumnIndexOrThrow zamiast GetColumnIndex poniewaz
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
@@ -430,48 +450,48 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         //Tutaj jest metoda getColumnIndexOrThrow zamiast GetColumnIndex poniewaz
     //wywala blad Value must be ≥ 0 but `getColumnIndex` can be -1. Nie wiem jak
     //to rozwiazac
-    fun getRowByUUID(uuid: UUID): Exercise {
-
-         // Define the SELECT query with placeholders for arguments
-        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_UUID = ?"
-
-        // Define the argument(s) for the query as an array
-        val args = arrayOf(uuid.toString())
-
-        // Get a readable database reference
-        val db = this.readableDatabase
-
-        // Execute the query and get a cursor that points to the result set
-        val cursor = db.rawQuery(selectQuery, args)
-
-        // Declare a variable to hold the row data as an Exercise object
-        var row: Exercise? = null
-
-        // Check if the cursor has any data
-        if (cursor.moveToFirst()) {
-        // If the cursor points to the first row of data, create a new Exercise object with the values from the cursor
-        row = Exercise(
-        uuid  = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)),
-        exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE)),
-        date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
-        weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),
-        repetitions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
-        )
-        }
-
-        // Check if row is still null (i.e. no row was found with the given UUID)
-        if (row == null) {
-        // Throw an exception indicating that no row was found with the given UUID
-        throw Exception("No row found with UUID $uuid")
-        }
-
-        // Close the database and cursor resources
-        db.close()
-        cursor.close()
-
-        // Return the row data as an Exercise object
-        return row
-    }
+//    fun getRowByUUID(uuid: UUID): Exercise {
+//
+//         // Define the SELECT query with placeholders for arguments
+//        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_UUID = ?"
+//
+//        // Define the argument(s) for the query as an array
+//        val args = arrayOf(uuid.toString())
+//
+//        // Get a readable database reference
+//        val db = this.readableDatabase
+//
+//        // Execute the query and get a cursor that points to the result set
+//        val cursor = db.rawQuery(selectQuery, args)
+//
+//        // Declare a variable to hold the row data as an Exercise object
+//        var row: Exercise? = null
+//
+//        // Check if the cursor has any data
+//        if (cursor.moveToFirst()) {
+//        // If the cursor points to the first row of data, create a new Exercise object with the values from the cursor
+//        row = Exercise(
+//        uuid  = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID)),
+//        exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE)),
+//        date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
+//        weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)),
+//        repetitions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
+//        )
+//        }
+//
+//        // Check if row is still null (i.e. no row was found with the given UUID)
+//        if (row == null) {
+//        // Throw an exception indicating that no row was found with the given UUID
+//        throw Exception("No row found with UUID $uuid")
+//        }
+//
+//        // Close the database and cursor resources
+//        db.close()
+//        cursor.close()
+//
+//        // Return the row data as an Exercise object
+//        return row
+//    }
 
 
     /**

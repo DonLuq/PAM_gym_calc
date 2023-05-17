@@ -39,7 +39,7 @@ public class CrimeActivity : AppCompatActivity() {
     val second = c.get(Calendar.SECOND)
 
     val viewPager : ViewPager2 by lazy {findViewById(R.id.view_pager)}
-    val adapter by lazy { CrimePagerAdapter(this) }
+//    val adapter by lazy { CrimePagerAdapter(this) }
 
     @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -47,9 +47,9 @@ public class CrimeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.view_pager_layout)
 
-        viewPager.adapter = adapter
+//        viewPager.adapter = adapter
         Log.i("CHECKED","A")
-        viewPager.currentItem = DBHandler(this).getExercisePosition(UUID)
+//        viewPager.currentItem = DBHandler(this).getExercisePosition(UUID)
         Log.i("CHECKED","B")
 
     }
@@ -62,22 +62,22 @@ public class CrimeActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun DeleteCrime(view: View) {
-        DBHandler(this).deleteExercise( adapter.crimes[viewPager.currentItem])
-        val list = DBHandler(this).getExercises()
-        adapter.refreshList(list)
-        viewPager.adapter?.notifyDataSetChanged()
-        finish()
-    }
+//    fun DeleteCrime(view: View) {
+//        DBHandler(this).deleteExercise( adapter.crimes[viewPager.currentItem])
+//        val list = DBHandler(this).getExercises()
+//        adapter.refreshList(list)
+//        viewPager.adapter?.notifyDataSetChanged()
+//        finish()
+//    }
 
-    override fun onPause() {
-        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
-//        currentHolder.title = title.text.toString()
-//        currentHolder.date = date.text.toString() + " " + time.text.toString()
-//        currentHolder.details = details.text.toString()
-        DBHandler(this).updateExercise(currentHolder)
-        super.onPause()
-    }
+//    override fun onPause() {
+//        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
+////        currentHolder.title = title.text.toString()
+////        currentHolder.date = date.text.toString() + " " + time.text.toString()
+////        currentHolder.details = details.text.toString()
+//        DBHandler(this).updateExercise(currentHolder)
+//        super.onPause()
+//    }
 
 
     override fun onBackPressed() {
@@ -142,9 +142,9 @@ public class CrimeActivity : AppCompatActivity() {
         viewPager.setCurrentItem(0)
     }
 
-    fun lastCrime(view: android.view.View) {
-        viewPager.setCurrentItem(adapter.itemCount-1)
-    }
+//    fun lastCrime(view: android.view.View) {
+//        viewPager.setCurrentItem(adapter.itemCount-1)
+//    }
 
 //    fun addRecord(view: android.view.View) {
 //        val stringToSend : String = date.text.toString() + " " + time.text.toString() + " " + record_1.text.toString() + " " + record_2.text.toString() + " " + record_3.text.toString()

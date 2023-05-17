@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDate
 import java.util.*
+import com.example.myapplication.Exercise
 
 class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     private lateinit var mListener : onItemClickListener
@@ -51,9 +52,9 @@ class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<Cu
         val ExerciseItem = mList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.titleView.setText(ExerciseItem.getExercise()) //TODO please change this function name to sthing like getName
-        holder.dateView.setText(ExerciseItem.getDate())
-        holder.recordView.setText(ExerciseItem.getWeight()) //TODO Add parser for display proper data
+        holder.titleView.setText(ExerciseItem.exercise) //TODO please change this function name to sthing like getName
+        holder.dateView.setText(ExerciseItem.date)
+        holder.recordView.setText(ExerciseItem.weight) //TODO Add parser for display proper data
 
 //        val currentDate = LocalDate.now()
 //        val crimeDate = ItemsViewModel.record_1.split(" ")[0].split("-")
