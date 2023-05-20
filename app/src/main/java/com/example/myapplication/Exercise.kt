@@ -1,20 +1,12 @@
  package com.example.myapplication;
 
- import android.os.Build;
-
- import androidx.annotation.RequiresApi;
-
- import java.time.LocalDate;
- import java.time.LocalDateTime;
- import java.time.format.DateTimeFormatter;
- import java.util.Date;
  import java.util.UUID;
 
 // Data class for Exercise
 data class Exercise(
     var id: Int,
     var uuid: String = UUID.randomUUID().toString(),
-    var exercise: String,
+    var name: String,
     var date: String = "2000-12-12 13:20:00",
     var weight: String = "10 10 10",
     var repetitions: String = "15 15 15"
@@ -23,7 +15,7 @@ data class Exercise(
     constructor(exercise: Exercise) : this(
         exercise.id,
         exercise.uuid ?: UUID.randomUUID().toString(),
-        exercise.exercise,
+        exercise.name,
         exercise.date,
         exercise.weight,
         exercise.repetitions

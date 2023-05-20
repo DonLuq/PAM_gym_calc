@@ -1,19 +1,13 @@
 package com.example.myapplication
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalDate
 import java.util.*
-import com.example.myapplication.Exercise
 
 class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     private lateinit var mListener : onItemClickListener
@@ -52,7 +46,7 @@ class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<Cu
         val ExerciseItem = mList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.titleView.setText(ExerciseItem.exercise) //TODO please change this function name to sthing like getName
+        holder.titleView.setText(ExerciseItem.name) //TODO please change this function name to sthing like getName
         holder.dateView.setText(ExerciseItem.date)
         holder.recordView.setText(ExerciseItem.weight) //TODO Add parser for display proper data
 
