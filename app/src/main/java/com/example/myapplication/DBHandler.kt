@@ -124,15 +124,15 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         uuid: String?,
         name: String?,
         date: String?,
-        weight: Int?,
-        repetitions: Int?
+        weight: String?,
+        repetitions: String?
     ) {
         // Check that the UUID and input values are valid
         require(!uuid.isNullOrEmpty()) { "Exercise UUID must not be null or empty" }
         require(!name.isNullOrEmpty()) { "Exercise name must not be null or empty" }
         requireNotNull(date) { "Date must not be null" }
-        require(weight != null && weight > 0) { "Weight must be a positive integer" }
-        require(repetitions != null && repetitions > 0) { "Repetitions must be a positive integer" }
+        require(weight != null && weight > 0.toString()) { "Weight must be a positive integer" }
+        require(repetitions != null && repetitions > 0.toString()) { "Repetitions must be a positive integer" }
 
         // Create a new ContentValues object and add updated values to it
         val values = ContentValues().apply {
@@ -603,5 +603,30 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         // Close the database resource
         db.close()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getExerciseByUUID(uuid: String): Exercise? {
+        // Get a readable database and query the exercise with the given UUID
+        readableDatabase.use { db ->
+            val cursor: Cursor? = db.query(
+                TABLE_EXERCISE, null, "$COLUMN_UUID = ?", arrayOf(uuid), null, null, null
+            )
+
+            // Check if a row was found with the given UUID
+            if (cursor?.moveToFirst() == true) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+                val exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE))
+                val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+                val weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT))
+                val repetitions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
+
+                // Create and return the Exercise object
+                return Exercise(id, uuid, exercise, date, weight, repetitions)
+            }
+        }
+
+        return null // Return null if no exercise was found with the given UUID
+    }
+
 
 }
