@@ -39,30 +39,36 @@ class CustomAdapter(private var mList: List<Exercise>) : RecyclerView.Adapter<Cu
         return ViewHolder(view, mListener)
     }
 
+
+    fun displayParseRecord(massStr : String, repStr : String) : String {
+        val separator = " "
+        val listOfMasses = massStr.split(separator)
+        val listOfReps = repStr.split(separator)
+
+        if (listOfMasses.size != listOfReps.size){
+            throw java.lang.Exception("Required data is invalid, different sizes of lists are prohibited")
+        }
+
+        var returnStr= ""
+        var index = 0
+        while (index < listOfMasses.size) {
+            returnStr += listOfMasses[index] + "[kg]:" + listOfReps[index] + "[x]  "
+            index++
+        }
+
+        return returnStr
+    }
+
+
     // binds the list items to a view
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val ExerciseItem = mList[position]
 
-        // sets the image to the imageview from our itemHolder class
-        holder.titleView.setText(ExerciseItem.name) //TODO please change this function name to sthing like getName
+        holder.titleView.setText(ExerciseItem.name)
         holder.dateView.setText(ExerciseItem.date)
-        holder.recordView.setText(ExerciseItem.weight) //TODO Add parser for display proper data
-
-//        val currentDate = LocalDate.now()
-//        val crimeDate = ItemsViewModel.record_1.split(" ")[0].split("-")
-//        if (currentDate.dayOfMonth == Integer.parseInt(crimeDate[2])){
-//            holder.clickedView.setBackgroundColor(0x00FF00);
-//            holder.clickedView.setText("TRUE")
-//        }
-//        else{
-//            holder.clickedView.setBackgroundColor(0xFF0000);
-//            holder.clickedView.setText("FALSE")
-//        }
-
-//        val recordText = ItemsViewModel.record_1.split(" ") // TODO Set records here after class delivery
-//        holder.recordView.setText(recordText[2] + " " + recordText[3] + " " + recordText[4])
+        holder.recordView.setText(displayParseRecord(ExerciseItem.weight,ExerciseItem.repetitions))
     }
 
     // return the number of the items in the list

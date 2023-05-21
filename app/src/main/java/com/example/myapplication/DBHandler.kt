@@ -53,12 +53,12 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addExercise(name: String?, date: String?, weight: Int?, repetitions: Int?) {
+    fun addExercise(name: String?, date: String?, weight: String?, repetitions: String?) {
         // Check that the input values are valid
         require(!name.isNullOrEmpty()) { "Exercise name must not be null or empty" }
         requireNotNull(date) { "Date must not be null" }
-        require(weight != null && weight > 0) { "Weight must be a positive integer" }
-        require(repetitions != null && repetitions > 0) { "Repetitions must be a positive integer" }
+//        require(weight != null && weight > 0) { "Weight must be a positive integer" }
+//        require(repetitions != null && repetitions > 0) { "Repetitions must be a positive integer" }
 
         // Generate a random UUID
         val uuid = UUID.randomUUID().toString()

@@ -16,7 +16,6 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     val startActivitySources : Bundle? by lazy { intent.extras }
     val DEV_TMP_DATE : String by lazy {startActivitySources!!.getString("DATE_FROM_PICK").toString()}
-//    val DEV_TMP_DATE = "YYYY-MM-DD"
     val recyclerview : RecyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerview) }
     val DBHandler by lazy { DBHandler(this) }
     lateinit var data : List<Exercise>
@@ -28,8 +27,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // data -> list<Exercise> with same date property
+        Log.i("MAIN","MAINACTIVITY")
         data = DBHandler.getListOfElementsByDate(DEV_TMP_DATE)
-        Log.d("xdd",data[0].weight)
+        Log.i("MAIN","MAINACTIV_LOADED")
         // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -39,15 +39,17 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 val intent = Intent(this@MainActivity,CrimeActivity::class.java)
 
-                intent.putExtra("UUID", data[position].uuid)
+                Log.i("POSITION", position.toString())
+                intent.putExtra("DATE", DEV_TMP_DATE)
+                intent.putExtra("POSITION_VIEWPAGER", position.toString())
                 startActivity(intent)
+                finish() //TODO Now it's WA for not working properly back button, so back button will move to StartActivity instead of MainActivity it's not a bug, it's a feature
             }
         })
 
         val searchView : SearchView = findViewById(R.id.search_bar)
         searchView.onActionViewExpanded()
 
-        //TODO Check if correct db handler is in use.
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -55,12 +57,21 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-//                    searchBase(newText)
+                    searchFilter(newText)
+                }
+                else{
+                    adapter.refreshList(data)
                 }
                 return false
             }
         })
 
+    }
+
+    fun searchFilter(newText : String) {
+        val newList : List<Exercise> = data.filter { it.name.contains(newText) }
+        adapter.refreshList(newList)
+        recyclerview.adapter?.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -72,26 +83,7 @@ class MainActivity : AppCompatActivity() {
         recyclerview.adapter?.notifyDataSetChanged()
     }
 
-//     @SuppressLint("NotifyDataSetChanged")
-//     @RequiresApi(Build.VERSION_CODES.O)
-//     fun CreateCrime(view: android.view.View) {
-//        val newCrime = Crime()
-//
-//        DBHandler.addCrime(newCrime)
-//        val list = DBHandler.getCrimes()
-//        adapter.refreshList(list)
-//        recyclerview.adapter?.notifyDataSetChanged()
-//
-//        val intent = Intent(this, CrimeActivity::class.java)
-//        intent.putExtra("UUID", newCrime.uuid) //TODO TUTAJ JEST PROBLEM Z NIEISTNIEJACYM ID -> SOLVED: przekazywanie uuid z ktorego w kolejnej aktywnosci odczytywane jest ID
-//        startActivity(intent)
-//    }
 
-//    fun searchBase(newText : String) {
-//        val list = DBHandler.searchExercise(newText)
-//        adapter.refreshList(list)
-//        recyclerview.adapter?.notifyDataSetChanged()
-//    }
 
 
 }

@@ -7,9 +7,9 @@ data class Exercise(
     var id: Int,
     var uuid: String = UUID.randomUUID().toString(),
     var name: String,
-    var date: String = "2000-12-12 13:20:00",
-    var weight: String = "10 10 10",
-    var repetitions: String = "15 15 15"
+    var date: String = "",
+    var weight: String = "",
+    var repetitions: String = ""
 ) {
     // Constructor for Exercise
     constructor(exercise: Exercise) : this(

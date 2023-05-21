@@ -144,8 +144,6 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:textSize="15dp"
-                android:inputType="date"
-                android:onClick="changeDate"
                 android:text="YYYY-MM-DD" />
 
         </LinearLayout>
@@ -154,8 +152,8 @@
                 android:id="@+id/add_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ADD RECORD" />
-        <!--                android:onClick="addRecord"-->
+                android:text="SAVE"
+                android:onClick="doDataChange" />
 
 
         <TextView
@@ -330,7 +328,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
                 android:text="DELETE RECORD"
-                android:onClick="DeleteCrime"/>
+                android:onClick="deleteRecord"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -343,7 +341,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="50dp"
-                    android:onClick="firstCrime"
+                    android:onClick="firstItem"
                     android:text="FIRST TASK" />
 
                 <Button
@@ -352,7 +350,7 @@
                     android:layout_weight="1"
                     android:layout_marginLeft="5dp"
                     android:layout_height="50dp"
-                    android:onClick="lastCrime"
+                    android:onClick="lastItem"
                     android:text="LAST TASK" />
 
             </LinearLayout>
