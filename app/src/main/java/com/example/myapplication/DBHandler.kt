@@ -333,7 +333,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
             val cursor2: Cursor = db.rawQuery(selectQuery2, null)
             val exercise = if (cursor2.moveToFirst()) {
                 val id = cursor2.getInt(cursor2.getColumnIndexOrThrow(COLUMN_ID))
-                val uuid = cursor.getString(cursor2.getColumnIndexOrThrow(COLUMN_UUID)) ?: UUID.randomUUID().toString()
+                val uuid = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_UUID)) ?: UUID.randomUUID().toString()
                 val exerciseName = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_EXERCISE))
                 val date = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_DATE))
                 val weight = cursor2.getString(cursor2.getColumnIndexOrThrow(COLUMN_WEIGHT))
