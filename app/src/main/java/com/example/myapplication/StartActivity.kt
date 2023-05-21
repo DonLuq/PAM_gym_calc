@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +17,21 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        val statisticsButton: Button = findViewById(R.id.btn_stats)
+        statisticsButton.setOnClickListener {
+            startPlotActivity()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
     }
 
+    fun startPlotActivity() {
+        val intent = Intent(this, PlotActivity::class.java)
+        startActivity(intent)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun pickDateMainActivity(view: View) {
@@ -58,7 +68,5 @@ class StartActivity : AppCompatActivity() {
         },year,month,day)
 
         dpd.show()
-
-
     }
 }

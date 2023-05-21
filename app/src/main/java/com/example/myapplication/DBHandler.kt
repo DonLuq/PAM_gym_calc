@@ -95,8 +95,8 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
                     val uuid = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UUID))
                     val exercise = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXERCISE))
                     val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
-                    val weight = cursor.getString(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT)))
-                    val repetitions = cursor.getString(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS)))
+                    val weight = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WEIGHT))
+                    val repetitions = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REPETITIONS))
 
                     // Create an Exercise object and add it to the list
                     val exerciseObj = Exercise(id, uuid, exercise, date, weight, repetitions)
@@ -107,6 +107,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
 
         return exerciseList
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun deleteExercise(uuid: String?) {

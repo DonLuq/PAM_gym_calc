@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         // data -> list<Exercise> with same date property
         Log.i("MAIN","MAINACTIVITY")
         data = DBHandler.getListOfElementsByDate(DEV_TMP_DATE)

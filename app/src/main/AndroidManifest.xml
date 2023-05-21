@@ -22,6 +22,11 @@
             android:exported="true"/>
         <activity
             android:screenOrientation="portrait"
+            android:name="com.example.myapplication.PlotActivity"
+            android:parentActivityName=".StartActivity"
+            android:exported="true"/>
+        <activity
+            android:screenOrientation="portrait"
             android:name=".StartActivity"
             android:launchMode="singleTop"
             android:exported="true">
