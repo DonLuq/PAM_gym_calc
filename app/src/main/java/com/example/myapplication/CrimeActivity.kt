@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -46,42 +47,18 @@ class CrimeActivity : AppCompatActivity() {
         viewPager.currentItem = position.toInt()
         Log.i("DATA_CrimeActivity",DATE_DEV)
 
-        initValues = getValueList(adapter.exercises[position.toInt()]) // Update initValues based on the selected page
+        initValues = getValueList(adapter.exercises[viewPager.currentItem]) // Update initValues based on the selected page
+
+        Log.i("UPC",initValues.toString())
+        Log.i("UPV",initValues.isEmpty().toString())
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                initValues = getValueList(adapter.exercises[position]) // Update initValues based on the selected page
+                initValues = getValueList(adapter.exercises[viewPager.currentItem]) // Update initValues based on the selected page
                 Log.i("DEBUG_2", initValues.toString())
             }
         })
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        val editText: EditText? = listOfRecords.getOrNull(0)
-//        if (editText != null) {
-//            val text: String = editText.text.toString()
-//            if (text.isEmpty()) {
-//                // The EditText is empty
-//                Log.i("LOG_VAL", "EditText is empty")
-//            } else {
-//                // The EditText has some text
-//                Log.i("LOG_VAL", "EditText is not empty")
-//            }
-//        } else {
-//            // The EditText is not found or null
-//            Log.i("LOG_VAL", "EditText is null or not found")
-//        }
-//    }
-    @SuppressLint("NotifyDataSetChanged")
-    @RequiresApi(Build.VERSION_CODES.O)
-//    fun DeleteCrime(view: View) {
-//        DBHandler(this).deleteExercise( adapter.crimes[viewPager.currentItem])
-//        val list = DBHandler(this).getExercises()
-//        adapter.refreshList(list)
-//        viewPager.adapter?.notifyDataSetChanged()
-//        finish()
-//    }
 
 //    override fun onPause() {
 //        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
@@ -91,7 +68,6 @@ class CrimeActivity : AppCompatActivity() {
 //        DBHandler(this).updateExercise(currentHolder)
 //        super.onPause()
 //    }
-
 
     override fun onBackPressed() {
 //        super.onBackPressed()
@@ -105,11 +81,17 @@ class CrimeActivity : AppCompatActivity() {
         for (editText in listOfRecords) {
             listValues.add(editText.text.toString())
         }
+        Log.i("UP3",listValues.toList().toString())
         return listValues.toList()
     }
 
     fun getValueList(obj: Exercise): List<String> {
-        return obj.weight.split(" ") + obj.repetitions.split(" ")
+        var returnObj = obj.weight.split(" ") + obj.repetitions.split(" ")
+        while (returnObj.size < 6){
+            returnObj += ""
+        }
+        Log.i("UP_getValueList_obj",returnObj.toString())
+        return returnObj
     }
 
     fun firstItem(view: View) {
@@ -123,28 +105,38 @@ class CrimeActivity : AppCompatActivity() {
     fun doDataChange(view: View) {
         if (isChanged()){
             Log.i("UP","isCHANGED true")
+            Log.i("UP4",getValueList().toString())
             if (isEmpty()){
                 Log.i("UP","isEMPTY")
                 Log.i("UP",isEmpty().toString())
                 Log.i("UP2",getValueList()[0])
+                Log.i("UP4",getValueList().toString())
                 val name = adapter.exercises[position.toInt()].name
-                val weight = getValueList().subList(0,2).joinToString(" ")
-                val reps = getValueList().subList(3,5).joinToString(" ")
+                val weight = getValueList().subList(0,3).joinToString(" ")
+                val reps = getValueList().subList(3,6).joinToString(" ")
                 Log.i("UP2_val isEmpty true", "$name $weight $reps $DATE_DEV")
                 dataBase.addExercise(name,DATE_DEV,weight, reps)
+                Log.i("UP4",getValueList().toString())
             }
             else{
+                Log.i("UP4",getValueList().toString())
                 Log.i("UP",isEmpty().toString())
                 Log.i("UP2",getValueList()[0])
                 val uuid = adapter.exercises[position.toInt()].uuid
                 val name = adapter.exercises[position.toInt()].name
-                val weight = getValueList().subList(0,2).joinToString(" ")
-                val reps = getValueList().subList(3,5).joinToString(" ")
+                val weight = getValueList().subList(0,3).joinToString(" ")
+                val reps = getValueList().subList(3,6).joinToString(" ")
                 Log.i("UP2_val isEmpty false", "$name $weight $reps")
                 dataBase.updateExercise(uuid,name,DATE_DEV,weight,reps)
+                Log.i("UP4",getValueList().toString())
             }
             //TODO Check if it maintains the changes
-            adapter.notifyItemChanged(viewPager.currentItem)
+            adapter.exercises[viewPager.currentItem].weight = ""
+            adapter.exercises[viewPager.currentItem].repetitions = ""
+            adapter.exercises[viewPager.currentItem].date = Calendar.DATE.toString() //it's not in use btw
+            initValues = getValueList(adapter.exercises[viewPager.currentItem])
+//            adapter.notifyItemChanged(viewPager.currentItem)
+            adapter.notifyDataSetChanged() // WA due to instability with changes (every second save is working) //TODO Find proper solution
         }
         else{
             Log.i("UP","isCHANGED false")
@@ -153,7 +145,6 @@ class CrimeActivity : AppCompatActivity() {
     }
 
     fun isEmpty(): Boolean {
-        Log.i("UP",initValues.toString() + "ISEMPTY")
         for (element in initValues){
             if (element != ""){
                 return false
@@ -169,7 +160,16 @@ class CrimeActivity : AppCompatActivity() {
         return currentList != initValues
     }
 
-    fun deleteRecord(view: View) {}
-
-
+    fun deleteRecord(view: View) {
+        val position = viewPager.currentItem
+        val uuid = adapter.exercises[position].uuid
+        Log.i("UP7",initValues.toString())
+        dataBase.deleteExercise(uuid)
+        adapter.exercises[position].weight = "  "
+        adapter.exercises[position].repetitions = "  "
+        adapter.exercises[position].date = ""
+        adapter.notifyItemChanged(viewPager.currentItem)
+        initValues = getValueList(adapter.exercises[position])
+        Log.i("UP7",initValues.toString())
+    }
 }
