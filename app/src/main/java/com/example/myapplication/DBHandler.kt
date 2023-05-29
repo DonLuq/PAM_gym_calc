@@ -16,7 +16,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
 
     companion object {
         private const val DATABASE_VERSION = 2
-        private const val DATABASE_NAME = "exerciseDB4.db"
+        private const val DATABASE_NAME = "exerciseDBtest.db"
 
         // Table and column names
         private const val TABLE_EXERCISE = "ExerciseTable"
@@ -39,7 +39,9 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
     override fun onCreate(db: SQLiteDatabase?) {
         // Define the SQL query for creating the exercise table
         val CREATE_EXERCISE_TABLE =
-            "CREATE TABLE $TABLE_EXERCISE($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_UUID TEXT, $COLUMN_EXERCISE TEXT, $COLUMN_DATE TEXT, $COLUMN_WEIGHT TEXT, $COLUMN_REPETITIONS TEXT)"
+            "CREATE TABLE $TABLE_EXERCISE($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_UUID TEXT, $COLUMN_EXERCISE TEXT, $COLUMN_DATE TEXT, $COLUMN_WEIGHT TEXT, $COLUMN_REPETITIONS TEXT)"
+
+
 
         // Execute the SQL query to create the table
         db?.execSQL(CREATE_EXERCISE_TABLE)
@@ -85,7 +87,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         // Get a readable database and query all rows from the exercise table
         readableDatabase.use { db ->
             val cursor: Cursor? = db.query(
-                TABLE_EXERCISE, null, null, null, null, null, null
+                TABLE_EXERCISE, null, null, null, null, null, "$COLUMN_DATE DESC"
             )
 
             // Iterate over the cursor and create Exercise objects from the rows
@@ -284,7 +286,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val exercisesByDate: MutableMap<String, Exercise> = mutableMapOf()
 
         // SQL query to retrieve all exercises from the database ordered by date in descending order
-        val selectQuery = "SELECT * FROM $TABLE_EXERCISE ORDER BY $COLUMN_DATE DESC"
+        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_DATE = ? ORDER BY $COLUMN_ID DESC"
 
         // Open a readable database connection and execute the query
         val db = this.readableDatabase
@@ -314,10 +316,10 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         }
 
         // Filter out duplicate exercise names, keeping the latest one
-        val latestExercises = exercisesByDate.values.groupBy { it.name }
-            .mapValues { (_, v) -> v.maxByOrNull { it.date }!! }
+//        val latestExercises = exercisesByDate.values.groupBy { it.name }
+//            .mapValues { (_, v) -> v.maxByOrNull { it.date }!! }
 
-        Log.d("TAG", "Latest exercises: $latestExercises")
+//        Log.d("TAG", "Latest exercises: $latestExercises")
 
         // Create a default exercise with empty properties
         val defaultExercise = Exercise((0..10).random(), "empty", "empty", "empty", "empty", "empty")
@@ -328,9 +330,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         // Add the latest exercise for each unique date to the list
         var counter = 0
         for (exerciseName in POSSIBLE_EXERCISES) {
-            val selectQuery2 = "SELECT * FROM $TABLE_EXERCISE " +
-                    "WHERE $COLUMN_EXERCISE = '$exerciseName' AND $COLUMN_DATE = '$date' " +
-                    "ORDER BY $COLUMN_DATE DESC"
+            val selectQuery2 = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_EXERCISE   = '$exerciseName' AND $COLUMN_DATE = '$date' ORDER BY $COLUMN_ID DESC"
             val cursor2: Cursor = db.rawQuery(selectQuery2, null)
             val exercise = if (cursor2.moveToFirst()) {
                 val id = cursor2.getInt(cursor2.getColumnIndexOrThrow(COLUMN_ID))
@@ -362,7 +362,7 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         val exercises = mutableListOf<Exercise>()
 
         // SQL query to retrieve the latest records for the given exercise name
-        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_EXERCISE = ? ORDER BY $COLUMN_DATE DESC LIMIT ?"
+        val selectQuery = "SELECT * FROM $TABLE_EXERCISE WHERE $COLUMN_EXERCISE = ? ORDER BY $COLUMN_ID DESC LIMIT ?"
 
         // Open a readable database connection and execute the query
         val db = this.readableDatabase
