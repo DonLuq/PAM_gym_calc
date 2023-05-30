@@ -21,10 +21,11 @@
             android:parentActivityName=".StartActivity"
             android:exported="true"/>
         <activity
+            android:name=".PlotActivity"
             android:screenOrientation="portrait"
-            android:name="com.example.myapplication.PlotActivity"
             android:parentActivityName=".StartActivity"
-            android:exported="true"/>
+            android:exported="true" />
+
         <activity
             android:screenOrientation="portrait"
             android:name=".StartActivity"

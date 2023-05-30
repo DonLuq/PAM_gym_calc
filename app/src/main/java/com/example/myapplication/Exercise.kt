@@ -20,6 +20,18 @@ data class Exercise(
         exercise.weight,
         exercise.repetitions
     )
+
+    val daysCount: Int
+        get() = date.split("-").size //
+
+    val totalWeight: Int
+        get() {
+            // assuming weight and repetitions are space-separated lists of integers
+            val weights = weight.split(" ").map { it.toInt() }
+            val reps = repetitions.split(" ").map { it.toInt() }
+
+            return weights.zip(reps).sumBy { (weight, rep) -> weight * rep }
+        }
      // Setter for Id
 //    fun setId(Id: Int) {
 //        id = Id

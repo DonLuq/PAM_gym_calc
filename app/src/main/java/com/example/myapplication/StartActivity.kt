@@ -1,17 +1,16 @@
 package com.example.myapplication
 
+import com.example.myapplication.PlotActivity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
-import kotlin.math.log
 
 class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,13 +58,11 @@ class StartActivity : AppCompatActivity() {
                 tempText += day.toString()
             }
 
-            Log.i("DATA : ",tempText)
-
-            val intent = Intent(this@StartActivity,MainActivity::class.java)
+            val intent = Intent(this@StartActivity, MainActivity::class.java)
             intent.putExtra("DATE_FROM_PICK", tempText)
             startActivity(intent)
 
-        },year,month,day)
+        }, year, month, day)
 
         dpd.show()
     }
