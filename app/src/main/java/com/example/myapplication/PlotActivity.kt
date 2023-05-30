@@ -1,54 +1,40 @@
 package com.example.myapplication
 
-import android.graphics.BitmapFactory
-    import android.os.Build
-    import android.os.Bundle
-    import android.widget.ImageView
-    import androidx.annotation.RequiresApi
-    import androidx.appcompat.app.AppCompatActivity
-    import jetbrains.letsPlot.export.ggsave
-    import jetbrains.letsPlot.geom.geom_point
-    import jetbrains.letsPlot.lets_plot
-    import java.io.File
-    import com.example.myapplication.DBHandler
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
+import com.example.myapplication.DBHandler
+import java.time.LocalDate
 
-    class PlotActivity : AppCompatActivity() {
-        @RequiresApi(Build.VERSION_CODES.O)
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_plot)
+class PlotActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-            // Create an instance of your DBHandler class
-            val dbHandler = DBHandler(this)
+        // Create an instance of your DBHandler class
+        val dbHandler = DBHandler(this)
 
-            // Retrieve data from the database
-            val exercises = dbHandler.getExercises()
+        // Retrieve data from the database
+        val exercises = dbHandler.getExercises()
 
-            // Extract the data you want to plot
-            val xData = exercises.map { it.date }
-            val yData = exercises.map { it.weight }
+        // Extract the data you want to plot and convert it to an array of DataPoint objects
+        val dataPoints = exercises.map { exercise ->
+            val date = LocalDate.parse(exercise.date)
+            val xValue = date.toEpochDay()
+            DataPoint(xValue.toDouble(), exercise.weight.toDouble())
+        }.toTypedArray()
 
-            // Format the data as a Map object
-            val data = mapOf<String, Any>(
-                "x" to xData,
-                "y" to yData
-            )
+        // Create a LineGraphSeries using the data points
+        val series = LineGraphSeries(dataPoints)
 
-            // Create a plot using the Lets-Plot API
-            val plot = lets_plot(data) { x = "x"; y = "y" } + geom_point()
-
-            // Save the plot as a PNG image to a temporary file
-            val file = File.createTempFile("plot", ".png")
-            ggsave(plot, file.absolutePath)
-
-            // Load the image from the temporary file into a Bitmap object
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-
-            // Create an ImageView component and set the Bitmap as its content
-            val imageView = ImageView(this)
-            imageView.setImageBitmap(bitmap)
-
-            // Set the ImageView as the content view of the activity
-            setContentView(imageView)
+        // Create a GraphView and add the series to it
+        val graphView = GraphView(this).apply {
+            addSeries(series)
+            title = "Weight"
         }
+
+        // Set the GraphView as the content view of the activity
+        setContentView(graphView)
     }
+}

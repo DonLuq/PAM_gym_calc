@@ -316,10 +316,10 @@ class DBHandler(context: Context) : SQLiteOpenHelper(
         }
 
         // Filter out duplicate exercise names, keeping the latest one
-//        val latestExercises = exercisesByDate.values.groupBy { it.name }
-//            .mapValues { (_, v) -> v.maxByOrNull { it.date }!! }
+        val latestExercises = exercisesByDate.values.groupBy { it.name }
+            .mapValues { (_, v) -> v.maxByOrNull { it.date }!! }
 
-//        Log.d("TAG", "Latest exercises: $latestExercises")
+        Log.d("TAG", "Latest exercises: $latestExercises")
 
         // Create a default exercise with empty properties
         val defaultExercise = Exercise((0..10).random(), "empty", "empty", "empty", "empty", "empty")

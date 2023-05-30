@@ -31,35 +31,39 @@ android {
         jvmTarget = '1.8'
     }
 
-    packagingOptions {
-        pickFirst 'license/LICENSE.dom-documentation.txt'
-        pickFirst 'license/NOTICE'
-        pickFirst 'license/README.dom.txt'
-        pickFirst 'license/LICENSE.dom-software.txt'
-        pickFirst 'license/LICENSE'
-    }
+//    packagingOptions {
+//        pickFirst 'license/LICENSE.dom-documentation.txt'
+//        pickFirst 'license/NOTICE'
+//        pickFirst 'license/README.dom.txt'
+//        pickFirst 'license/LICENSE.dom-software.txt'
+//        pickFirst 'license/LICENSE'
+//    }
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.jetbrains.datalore') {
-            details.useVersion '3.2.0'
-        }
-    }
-}
+//configurations.all {
+//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//        if (details.requested.group == 'org.jetbrains.datalore') {
+//            details.useVersion '3.2.0'
+//        }
+//    }
+//}
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'org.jetbrains.lets-plot:lets-plot-image-export:3.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation('org.jetbrains.lets-plot:lets-plot-kotlin-jvm:3.2.0') {
-        exclude group: 'org.jetbrains.lets-plot', module: 'lets-plot-common'
-        exclude group: 'org.jetbrains.lets-plot', module: 'plot-builder-portable-jvm'
-        // Add any other conflicting modules here if necessary
-    }
+    implementation 'com.jjoe64:graphview:4.2.2'
+//    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+//    implementation('org.jetbrains.lets-plot:lets-plot-kotlin-jvm:3.2.0') {
+//        exclude group: 'org.jetbrains.lets-plot', module: 'lets-plot-common'
+//        exclude group: 'org.jetbrains.lets-plot', module: 'plot-builder-portable-jvm'
+//        // Add any other conflicting modules here if necessary
+//    }
+//    implementation 'org.jetbrains.lets-plot:lets-plot-image-export:3.2.0-rc1'
+
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
