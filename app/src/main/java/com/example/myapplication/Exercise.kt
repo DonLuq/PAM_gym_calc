@@ -1,8 +1,17 @@
- package com.example.myapplication;
+package com.example.myapplication
 
- import java.util.UUID;
+import java.util.UUID
 
-// Data class for Exercise
+/**
+ * Data class representing an Exercise.
+ *
+ * @property id The unique identifier of the exercise.
+ * @property uuid The UUID (Universally Unique Identifier) of the exercise.
+ * @property name The name of the exercise.
+ * @property date The date of the exercise.
+ * @property weight The weight used for the exercise.
+ * @property repetitions The number of repetitions performed for the exercise.
+ */
 data class Exercise(
     var id: Int,
     var uuid: String = UUID.randomUUID().toString(),
@@ -11,7 +20,11 @@ data class Exercise(
     var weight: String = "",
     var repetitions: String = ""
 ) {
-    // Constructor for Exercise
+    /**
+     * Secondary constructor for Exercise.
+     *
+     * @param exercise The exercise object to copy the values from.
+     */
     constructor(exercise: Exercise) : this(
         exercise.id,
         exercise.uuid ?: UUID.randomUUID().toString(),
@@ -21,73 +34,21 @@ data class Exercise(
         exercise.repetitions
     )
 
+    /**
+     * Property that returns the number of days in the date field.
+     */
     val daysCount: Int
-        get() = date.split("-").size //
+        get() = date.split("-").size
 
+    /**
+     * Property that calculates the total weight lifted for the exercise.
+     */
     val totalWeight: Int
         get() {
-            // assuming weight and repetitions are space-separated lists of integers
+            // Assuming weight and repetitions are space-separated lists of integers
             val weights = weight.split(" ").map { it.toInt() }
             val reps = repetitions.split(" ").map { it.toInt() }
 
             return weights.zip(reps).sumBy { (weight, rep) -> weight * rep }
         }
-     // Setter for Id
-//    fun setId(Id: Int) {
-//        id = Id
-//    }
-//     // Getter for Id
-//    fun getId(): Int {
-//        return id
-//    }
-//     // Setter for UUID
-//    fun setUUID(UUID: String?) {
-//        if (UUID != null) {
-//            uuid = UUID
-//        }
-//    }
-//     // Getter for UUID
-//    fun getUUID(): String? {
-//        return uuid
-//    }
-//     // Setter for Exercise
-//    fun setExercise(e: String?) {
-//        if (e != null) {
-//            exercise = e
-//        }
-//    }
-//     // Getter for Exercise
-//    fun getExercise(): String? {
-//        return exercise
-//    }
-//     // Setter for Date
-//    fun setDate(s: String?) {
-//        if (s != null) {
-//            date = s
-//        }
-//    }
-//     // Getter for Date
-//    fun getDate(): String? {
-//        return date
-//    }
-//     // Setter for Weight
-//    fun setWeight(w: String?) {
-//        if (w != null) {
-//            weight = w
-//        }
-//    }
-//     // Getter for Weight
-//    fun getWeight(): String? {
-//        return weight
-//    }
-//     // Setter for Repetitions
-//    fun setRepetitions(r: String?) {
-//        if (r != null) {
-//            repetitions = r
-//        }
-//    }
-//     // Getter for Repetitions
-//    fun getRepetitions(): String? {
-//        return repetitions
-//    }
 }

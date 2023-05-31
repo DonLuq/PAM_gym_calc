@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import com.example.myapplication.PlotActivity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
@@ -17,7 +16,10 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
+        // Find the statistics button by its ID
         val statisticsButton: Button = findViewById(R.id.btn_stats)
+
+        // Set a click listener for the statistics button
         statisticsButton.setOnClickListener {
             startPlotActivity()
         }
@@ -25,8 +27,12 @@ class StartActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        // Save instance state here if needed
     }
 
+    /**
+     * Start the PlotActivity.
+     */
     fun startPlotActivity() {
         val intent = Intent(this, PlotActivity::class.java)
         startActivity(intent)
@@ -39,22 +45,20 @@ class StartActivity : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view : DatePicker, year : Int, month : Int, day : Int ->
-            var tempText : String = ""
+        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _: DatePicker, year: Int, month: Int, day: Int ->
+            var tempText: String = ""
 
             tempText += year.toString() + "-"
 
-            if (month < 9){
+            if (month < 9) {
                 tempText += "0" + (month + 1).toString() + "-"
-            }
-            else{
+            } else {
                 tempText += (month + 1).toString() + "-"
             }
 
-            if (day < 9){
+            if (day < 9) {
                 tempText += "0" + day.toString()
-            }
-            else{
+            } else {
                 tempText += day.toString()
             }
 
