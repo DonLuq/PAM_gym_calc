@@ -87,6 +87,7 @@ class CrimeActivity : AppCompatActivity() {
     }
 
     fun doDataChange(view: View) {
+        currentPosition = viewPager.currentItem.toString()
         if (isChanged()){
             if (isEmpty()){
                 val name = adapter.exercises[currentPosition.toInt()].name
@@ -124,7 +125,7 @@ class CrimeActivity : AppCompatActivity() {
         return true
     }
     fun isChanged(): Boolean {
-        val currentList : List<String> = getValueList()
+        var currentList : List<String> = getValueList()
         Log.i("UP",currentList.toString() + "CHANGED")
         Log.i("UP",initValues.toString() + "CHANGED")
         Log.i("UP",(currentList != initValues).toString())
@@ -132,6 +133,7 @@ class CrimeActivity : AppCompatActivity() {
     }
 
     fun deleteRecord(view: View) {
+        currentPosition = viewPager.currentItem.toString()
         val uuid = adapter.exercises[currentPosition.toInt()].uuid
         Log.i("UP7",initValues.toString())
         dataBase.deleteExercise(uuid)
