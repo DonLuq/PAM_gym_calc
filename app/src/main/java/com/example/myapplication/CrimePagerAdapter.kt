@@ -62,16 +62,13 @@ class CrimePagerAdapter(context: Context, val date: String) :
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         val currentExercise = exercises[position]
-        Log.i("EX_CONT", currentExercise.toString())
         val lastFiveRecords = dataBase.getRecordsByName(currentExercise.name, 5)
 
         holder.titleView.text = currentExercise.name
-        Log.i("DATA_CrimeonBindHolder", date_dev)
         holder.dateView.text = date
 
         val listOfValues: List<String> =
             currentExercise.weight.split(" ") + currentExercise.repetitions.split(" ")
-        Log.i("LISTA_WARTOSCI", listOfValues.toString())
 
         for ((index, element) in holder.listOfRecords.withIndex()) {
             val value = listOfValues.getOrNull(index) ?: ""

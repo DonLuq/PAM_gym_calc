@@ -13,15 +13,17 @@ import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_crime.*
 import kotlinx.android.synthetic.main.activity_crime.view.*
 import java.util.*
+import kotlin.system.exitProcess
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CrimeActivity : AppCompatActivity() {
     val bundle : Bundle? by lazy { intent.extras }
     val dataBase = DBHandler(this)
-    val position : String by lazy {bundle!!.getString("POSITION_VIEWPAGER").toString()}
+    val startPosition : String by lazy {bundle!!.getString("POSITION_VIEWPAGER").toString()}
     val DATE_DEV : String by lazy {bundle!!.getString("DATE").toString()}
     private lateinit var initValues: List<String>
+    private lateinit var currentPosition : String
     val listOfRecords: List<EditText> by lazy {
         listOf(
             findViewById(R.id.record_entry_1),
@@ -43,34 +45,18 @@ class CrimeActivity : AppCompatActivity() {
         setContentView(R.layout.view_pager_layout)
 
         viewPager.adapter = adapter
-        Log.i("POSITION", position)
-        viewPager.currentItem = position.toInt()
-        Log.i("DATA_CrimeActivity",DATE_DEV)
-
+        viewPager.currentItem = startPosition.toInt()
         initValues = getValueList(adapter.exercises[viewPager.currentItem]) // Update initValues based on the selected page
-
-        Log.i("UPC",initValues.toString())
-        Log.i("UPV",initValues.isEmpty().toString())
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 initValues = getValueList(adapter.exercises[viewPager.currentItem]) // Update initValues based on the selected page
-                Log.i("DEBUG_2", initValues.toString())
+                currentPosition = viewPager.currentItem.toString()
             }
         })
     }
 
-//    override fun onPause() {
-//        val currentHolder : Crime = adapter.crimes[viewPager.currentItem]
-////        currentHolder.title = title.text.toString()
-////        currentHolder.date = date.text.toString() + " " + time.text.toString()
-////        currentHolder.details = details.text.toString()
-//        DBHandler(this).updateExercise(currentHolder)
-//        super.onPause()
-//    }
-
     override fun onBackPressed() {
-//        super.onBackPressed()
         //TODO Add popup if changes are not saved "Are you sure?"
         setResult(0)
         finish()
@@ -81,7 +67,6 @@ class CrimeActivity : AppCompatActivity() {
         for (editText in listOfRecords) {
             listValues.add(editText.text.toString())
         }
-        Log.i("UP3",listValues.toList().toString())
         return listValues.toList()
     }
 
@@ -90,7 +75,6 @@ class CrimeActivity : AppCompatActivity() {
         while (returnObj.size < 6){
             returnObj += ""
         }
-        Log.i("UP_getValueList_obj",returnObj.toString())
         return returnObj
     }
 
@@ -104,31 +88,18 @@ class CrimeActivity : AppCompatActivity() {
 
     fun doDataChange(view: View) {
         if (isChanged()){
-            Log.i("UP","isCHANGED true")
-            Log.i("UP4",getValueList().toString())
             if (isEmpty()){
-                Log.i("UP","isEMPTY")
-                Log.i("UP",isEmpty().toString())
-                Log.i("UP2",getValueList()[0])
-                Log.i("UP4",getValueList().toString())
-                val name = adapter.exercises[position.toInt()].name
+                val name = adapter.exercises[currentPosition.toInt()].name
                 val weight = getValueList().subList(0,3).joinToString(" ")
                 val reps = getValueList().subList(3,6).joinToString(" ")
-                Log.i("UP2_val isEmpty true", "$name $weight $reps $DATE_DEV")
                 dataBase.addExercise(name,DATE_DEV,weight, reps)
-                Log.i("UP4",getValueList().toString())
             }
             else{
-                Log.i("UP4",getValueList().toString())
-                Log.i("UP",isEmpty().toString())
-                Log.i("UP2",getValueList()[0])
-                val uuid = adapter.exercises[position.toInt()].uuid
-                val name = adapter.exercises[position.toInt()].name
+                val uuid = adapter.exercises[currentPosition.toInt()].uuid
+                val name = adapter.exercises[currentPosition.toInt()].name
                 val weight = getValueList().subList(0,3).joinToString(" ")
                 val reps = getValueList().subList(3,6).joinToString(" ")
-                Log.i("UP2_val isEmpty false", "$name $weight $reps")
                 dataBase.updateExercise(uuid,name,DATE_DEV,weight,reps)
-                Log.i("UP4",getValueList().toString())
             }
             //TODO Check if it maintains the changes
             adapter.exercises[viewPager.currentItem].weight = ""
@@ -161,15 +132,13 @@ class CrimeActivity : AppCompatActivity() {
     }
 
     fun deleteRecord(view: View) {
-        val position = viewPager.currentItem
-        val uuid = adapter.exercises[position].uuid
+        val uuid = adapter.exercises[currentPosition.toInt()].uuid
         Log.i("UP7",initValues.toString())
         dataBase.deleteExercise(uuid)
-        adapter.exercises[position].weight = "  "
-        adapter.exercises[position].repetitions = "  "
-        adapter.exercises[position].date = ""
+        adapter.exercises[currentPosition.toInt()].weight = "  "
+        adapter.exercises[currentPosition.toInt()].repetitions = "  "
+        adapter.exercises[currentPosition.toInt()].date = ""
         adapter.notifyItemChanged(viewPager.currentItem)
-        initValues = getValueList(adapter.exercises[position])
-        Log.i("UP7",initValues.toString())
+        initValues = getValueList(adapter.exercises[currentPosition.toInt()])
     }
 }
